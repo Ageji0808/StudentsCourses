@@ -16,24 +16,20 @@ public class StudentsService {
   private StudentsCoursesRepository studentsCoursesRepository;
 
   @Autowired
-  public StudentsService(StudentsRepository studentsRepository, StudentsCoursesRepository studentsCoursesRepository) {
+  public StudentsService(StudentsRepository studentsRepository,
+      StudentsCoursesRepository studentsCoursesRepository) {
     this.studentsRepository = studentsRepository;
     this.studentsCoursesRepository = studentsCoursesRepository;
   }
 
   public List<Students> searchStudentsList() {
-    int startAge = 30;
-    int endAge = 39;
-    return studentsRepository.getAllStudents()
-        .stream()
-        .filter(student -> student.getAge() >= startAge && student.getAge() <= endAge)
-        .collect(Collectors.toList());}
+
+    return studentsRepository.getAllStudents();
+
+  }
 
   public List<StudentsCourses> searchStudentsCoursesList() {
-    return studentsCoursesRepository.getAllStudentsCourses()
-        .stream()
-        .filter(sc -> "Java".equals(sc.getCourseName()))
-        .collect(Collectors.toList());
+    return studentsCoursesRepository.getAllStudentsCourses();
   }
 }
 

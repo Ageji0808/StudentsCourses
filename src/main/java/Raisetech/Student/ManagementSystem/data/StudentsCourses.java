@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 
 public class StudentsCourses {
+
   private String courseID;
   private String studentID;
   private String courseName;
