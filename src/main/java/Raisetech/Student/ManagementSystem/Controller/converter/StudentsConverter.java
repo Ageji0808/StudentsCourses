@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StudentsConverter {
+
   public List<StudentsDetail> convertStudentsDetails(List<Students> students,
       List<StudentsCourses> studentsCourses) {
     List<StudentsDetail> studentsDetails = new ArrayList<>();

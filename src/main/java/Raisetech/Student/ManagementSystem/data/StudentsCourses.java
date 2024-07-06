@@ -3,6 +3,7 @@ package Raisetech.Student.ManagementSystem.data;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,9 @@ import lombok.Setter;
 
 public class StudentsCourses {
 
-  private String courseID;
+  // UUIDを生成してcourseIdにセットする
+  // UUIDを生成してcourseIdにセットする
+  private String courseID = UUID.randomUUID().toString();
   private String studentID;
   private String courseName;
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -19,4 +22,8 @@ public class StudentsCourses {
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   private Date endDate;
+
+
 }
+
+
