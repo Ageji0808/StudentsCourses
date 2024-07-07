@@ -21,15 +21,15 @@
   </thead>
   <tbody>
   <tr th:each="studentsDetail : ${studentsList}">
-    <td th:text="${studentsDetail.students.id}">A1</td>
-    <td th:text="${studentsDetail.students.name}">上路啓太</td>
-    <td th:text="${studentsDetail.students.hurigana}">アゲジケイタ</td>
-    <td th:text="${studentsDetail.students.nickname}">ケータロス</td>
-    <td th:text="${studentsDetail.students.mailaddress}"> keitai8323@ddtthhh,co.jp</td>
-    <td th:text="${studentsDetail.students.area}">柏市</td>
-    <td th:text="${studentsDetail.students.age}">24</td>
-    <td th:text="${studentsDetail.students.sex}">男性</td>
-    <td th:text="${studentsDetail.students.remark}">特になし</td>
+    <td th:text="${studentsDetail.student.id}">A1</td>
+    <td th:text="${studentsDetail.student.name}">上路啓太</td>
+    <td th:text="${studentsDetail.student.hurigana}">アゲジケイタ</td>
+    <td th:text="${studentsDetail.student.nickname}">ケータロス</td>
+    <td th:text="${studentsDetail.student.mailaddress}"> keitai8323@ddtthhh,co.jp</td>
+    <td th:text="${studentsDetail.student.area}">柏市</td>
+    <td th:text="${studentsDetail.student.age}">24</td>
+    <td th:text="${studentsDetail.student.sex}">男性</td>
+    <td th:text="${studentsDetail.student.remark}">特になし</td>
   </tr>
   </tbody>
 </table>
