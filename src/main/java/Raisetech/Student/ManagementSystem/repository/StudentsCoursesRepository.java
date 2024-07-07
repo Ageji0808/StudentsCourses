@@ -14,7 +14,7 @@ public interface StudentsCoursesRepository {
   @Select("SELECT * FROM studentsCourses")
   List<StudentsCourses> getAllStudentsCourses();
 
-  @Insert("INSERT studentsCourses(courseID,studentID,courseName) values(#{courseID},#{studentID},#{courseName})")
+  @Insert("INSERT studentsCourses(course_id,student_id,course_name) values(#{courseID},#{studentID},#{courseName})")
   void insertStudentsCourses(StudentsCourses studentsCourses);
 
 
