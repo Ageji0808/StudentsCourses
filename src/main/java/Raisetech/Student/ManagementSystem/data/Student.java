@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Insert;
 @Getter
 @Setter
 
-public class Students {
+public class Student {
 
   private String id;
   private String name;
@@ -23,12 +23,12 @@ public class Students {
   private boolean isDeleted;
 
 
-  public Students() {
+  public Student() {
     this.id = UUID.randomUUID().toString(); // UUIDを生成してIDにセットする
   }
 
 
-  public Students(String name) {
+  public Student(String name) {
     this.id = UUID.randomUUID().toString();
     this.name = name;
 

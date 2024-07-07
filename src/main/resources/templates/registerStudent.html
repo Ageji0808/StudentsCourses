@@ -5,10 +5,10 @@
 </head>
 <body>
 <h1>受講生登録</h1>
-<form th:action="@{/registerStudents}" th:object="${studentsDetail}" method="post">
+<form th:action="@{/registerStudent}" th:object="${studentsDetail}" method="post">
   <div>
     <label for="name">名前:</label>
-    <input type="text" id="name" th:field="*{students.name}" required/>
+    <input type="text" id="name" th:field="*{student.name}" required/>
   </div>
   <div>
     <label for="name">受講生コース:</label>

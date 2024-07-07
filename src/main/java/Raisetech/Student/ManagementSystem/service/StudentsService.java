@@ -1,6 +1,6 @@
 package Raisetech.Student.ManagementSystem.service;
 
-import Raisetech.Student.ManagementSystem.data.Students;
+import Raisetech.Student.ManagementSystem.data.Student;
 import Raisetech.Student.ManagementSystem.data.StudentsCourses;
 import Raisetech.Student.ManagementSystem.repository.StudentsCoursesRepository;
 import Raisetech.Student.ManagementSystem.repository.StudentsRepository;
@@ -25,15 +25,15 @@ public class StudentsService {
   }
 
   @Transactional
-  public Students insertStudents(Students students) {
+  public Student insertStudent(Student student) {
     // UUIDを生成してIDにセットする
-    students.setId(UUID.randomUUID().toString());
-    studentsRepository.insertStudents(students);
-    return students; // 保存後のエンティティを返す
+    student.setId(UUID.randomUUID().toString());
+    studentsRepository.insertStudent(student);
+    return student; // 保存後のエンティティを返す
   }
 
 
-  public List<Students> searchStudentsList() {
+  public List<Student> searchStudentList() {
 
     return studentsRepository.getAllStudents();
 

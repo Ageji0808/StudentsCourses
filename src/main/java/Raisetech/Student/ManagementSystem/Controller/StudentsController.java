@@ -1,7 +1,7 @@
 package Raisetech.Student.ManagementSystem.Controller;
 
 import Raisetech.Student.ManagementSystem.Controller.converter.StudentsConverter;
-import Raisetech.Student.ManagementSystem.data.Students;
+import Raisetech.Student.ManagementSystem.data.Student;
 import Raisetech.Student.ManagementSystem.data.StudentsCourses;
 import Raisetech.Student.ManagementSystem.domain.StudentsDetail;
 import Raisetech.Student.ManagementSystem.service.StudentsService;
@@ -27,34 +27,34 @@ public class StudentsController {
     this.converter = converter;
   }
 
-  @GetMapping("/students")
+  @GetMapping("/student")
   public String getStudentsList(Model model) {
-    List<Students> students = studentsService.searchStudentsList();
+    List<Student> student = studentsService.searchStudentList();
     List<StudentsCourses> studentsCourses = studentsService.searchStudentsCoursesList();
-    model.addAttribute("studentsList", converter.convertStudentsDetails(students, studentsCourses));
+    model.addAttribute("studentsList", converter.convertStudentsDetails(student, studentsCourses));
     model.addAttribute("studentsCoursesList", studentsCourses);
     return "studentsAndCoursesList"; // 統合されたテンプレート名
   }
 
 
-  @GetMapping("/newStudents")
-  public String newStudents(Model model) {
+  @GetMapping("/newStudent")
+  public String newStudent(Model model) {
     model.addAttribute("studentsDetail", new StudentsDetail());
-    return "registerStudents";
+    return "registerStudent";
   }
 
 
-  @PostMapping("/registerStudents")
-  public String registerStudents(@ModelAttribute StudentsDetail studentsDetail,
+  @PostMapping("/registerStudent")
+  public String registerStudent(@ModelAttribute StudentsDetail studentsDetail,
       BindingResult result) {
     if (result.hasErrors()) {
-      return "registerStudents";
+      return "registerStudent";
     }
     // 1. 新しい学生エンティティを取得
-    Students newStudent = studentsDetail.getStudents();
+    Student newStudent = studentsDetail.getStudent();
 
     // 2. 学生をデータベースに保存して、保存後のエンティティを取得
-    Students savedStudent = studentsService.insertStudents(newStudent);
+    Student savedStudent = studentsService.insertStudent(newStudent);
 
     // 3. 保存された学生のIDを確認用に出力
     String savedStudentId = savedStudent.getId();
@@ -69,7 +69,7 @@ public class StudentsController {
       System.out.println("Saved course ID: " + courseId); // 確認用出力
     }
 
-    return "redirect:/students";
+    return "redirect:/student";
   }
 }
 
