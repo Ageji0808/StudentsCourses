@@ -1,10 +1,9 @@
-package Raisetech.Student.ManagementSystem.data;
+package raisetech.student.management.data;
 
 
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.ibatis.annotations.Insert;
 
 @Getter
 @Setter
@@ -23,16 +22,15 @@ public class Student {
   private boolean isDeleted;
 
 
-  public Student() {
-    this.id = UUID.randomUUID().toString(); // UUIDを生成してIDにセットする
-  }
+  public Student() {this.id = UUID.randomUUID().toString();
+
+    ;} // デフォルトは削除されていない状態}
 
 
   public Student(String name) {
     this.id = UUID.randomUUID().toString();
     this.name = name;
-
-
+    ; // 初期値として false を設定
   }
 
 

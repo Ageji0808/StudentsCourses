@@ -1,4 +1,4 @@
-package Raisetech.Student.ManagementSystem.data;
+package raisetech.student.management.data;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -12,8 +12,6 @@ import lombok.Setter;
 
 public class StudentsCourses {
 
-  // UUIDを生成してcourseIdにセットする
-  // UUIDを生成してcourseIdにセットする
   private String courseID = UUID.randomUUID().toString();
   private String studentID;
   private String courseName;

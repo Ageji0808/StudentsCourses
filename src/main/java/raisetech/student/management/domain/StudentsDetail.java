@@ -1,7 +1,7 @@
-package Raisetech.Student.ManagementSystem.domain;
+package raisetech.student.management.domain;
 
-import Raisetech.Student.ManagementSystem.data.Student;
-import Raisetech.Student.ManagementSystem.data.StudentsCourses;
+import raisetech.student.management.data.Student;
+import raisetech.student.management.data.StudentsCourses;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -11,21 +11,20 @@ import lombok.Setter;
 @Setter
 public class StudentsDetail {
 
-  private Student student;
-  private List<StudentsCourses> studentsCourses;
+  public Student student;
+  public List<StudentsCourses> studentsCourses;
+
 
   public StudentsDetail() {
     this.student = new Student();
     this.studentsCourses = new ArrayList<>();
   }
 
-  // Studentを受け取るコンストラクタ
   public StudentsDetail(Student student) {
     this.student = student;
     this.studentsCourses = new ArrayList<>();
   }
 
-  // StudentsCoursesを受け取るコンストラクタ
   public StudentsDetail(List<StudentsCourses> studentsCourses) {
     this.student = new Student();
     this.studentsCourses = studentsCourses;
