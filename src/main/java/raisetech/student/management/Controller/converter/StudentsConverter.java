@@ -1,8 +1,8 @@
 package raisetech.student.management.Controller.converter;
 
-import Raisetech.Student.ManagementSystem.data.Student;
-import Raisetech.Student.ManagementSystem.data.StudentsCourses;
-import Raisetech.Student.ManagementSystem.domain.StudentsDetail;
+import raisetech.student.management.data.Student;
+import raisetech.student.management.data.StudentsCourses;
+import raisetech.student.management.domain.StudentsDetail;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

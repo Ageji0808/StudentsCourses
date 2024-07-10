@@ -1,5 +1,8 @@
 package raisetech.student.management.Controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import raisetech.student.management.Controller.converter.StudentsConverter;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentsCourses;
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
-@Controller
+@RestController
 public class StudentsController {
 
   private StudentsService studentsService;
@@ -30,15 +33,11 @@ public class StudentsController {
   }
 
   @GetMapping("/student")
-  public String getStudentsList(Model model) {
+  public List<StudentsDetail> getStudentsList() {
     List<Student> students = studentsService.searchStudentList();
     List<StudentsCourses> studentsCourses = studentsService.searchStudentsCoursesList();
-    List<StudentsDetail> studentsDetails = converter.convertStudentsDetails(students,
+    return converter.convertStudentsDetails(students,
         studentsCourses);
-
-    model.addAttribute("studentsList", studentsDetails);
-    model.addAttribute("studentsCoursesList", studentsCourses);
-    return "studentsAndCoursesList"; // 統合されたテンプレート名
   }
 
   @GetMapping("/newStudent")
@@ -48,7 +47,8 @@ public class StudentsController {
   }
 
   @PostMapping("/registerStudent")
-  public String registerStudent(@ModelAttribute("studentsDetail") StudentsDetail studentsDetail, BindingResult result) {
+  public String registerStudent(@ModelAttribute("studentsDetail") StudentsDetail studentsDetail,
+      BindingResult result) {
     if (result.hasErrors()) {
       return "registerStudent";
     }
@@ -66,34 +66,15 @@ public class StudentsController {
     return "redirect:/student";
   }
 
-  @GetMapping("/studentsDetail/{id}")
-  public String getStudentDetails(@PathVariable String id, Model model) {
-    StudentsDetail studentsDetail = studentsService.findStudentById(id);
-    System.out.println("学生詳細: " + studentsDetail);
-    model.addAttribute("studentsDetail", studentsDetail);
-    return "updateStudents";
-  }
+ 
 
   @PostMapping("/updateStudent")
-  public String updateStudent(@ModelAttribute("studentsDetail") StudentsDetail studentsDetail, BindingResult result) {
-    if (result.hasErrors()) {
-      return "updateStudents";
-    }
-    System.out.println("更新する学生: " + studentsDetail.getStudent());
-    System.out.println("キャンセル状態: " + studentsDetail.getStudent().isDeleted());
-
+  public ResponseEntity<String> updateStudent(@RequestBody StudentsDetail studentsDetail
+      ) {
 
     studentsService.updateStudent(studentsDetail.getStudent());
 
-    System.out.println("更新する学生: " + studentsDetail.getStudent());
-    System.out.println("キャンセル状態: " + studentsDetail.getStudent().isDeleted());
-
-
-    for (StudentsCourses course : studentsDetail.getStudentsCourses()) {
-      course.setStudentID(studentsDetail.getStudent().getId());  // ここで studentID を設定
-      studentsService.updateStudentsCourses(course);
-    }
-    return "redirect:/student";
+    return ResponseEntity.ok("更新処理が成功しました。");
   }
 }
 
