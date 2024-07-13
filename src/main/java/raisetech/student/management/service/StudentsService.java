@@ -1,12 +1,12 @@
 package raisetech.student.management.service;
 
+import java.time.LocalDate;
+import raisetech.student.management.Controller.converter.StudentsConverter;
 import raisetech.student.management.data.Student;
-import raisetech.student.management.data.StudentsCourses;
+import raisetech.student.management.data.StudentsCourse;
 import raisetech.student.management.domain.StudentsDetail;
-import raisetech.student.management.repository.StudentsCoursesRepository;
 import raisetech.student.management.repository.StudentsRepository;
 import java.util.List;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,42 +15,52 @@ import org.springframework.transaction.annotation.Transactional;
 public class StudentsService {
 
   private StudentsRepository studentsRepository;
-  private StudentsCoursesRepository studentsCoursesRepository;
+
+  private StudentsConverter studentsConverter;
 
   @Autowired
   public StudentsService(StudentsRepository studentsRepository,
-      StudentsCoursesRepository studentsCoursesRepository) {
+      StudentsConverter studentsConverter) {
     this.studentsRepository = studentsRepository;
-    this.studentsCoursesRepository = studentsCoursesRepository;
+    this.studentsConverter = studentsConverter;
 
   }
 
   @Transactional
-  public Student insertStudent(Student student) {
-    student.setId(UUID.randomUUID().toString());
-    studentsRepository.insertStudent(student);
-    return student;
+  public StudentsDetail registerStudent(StudentsDetail studentsDetail) {
+    studentsRepository.registerStudent(studentsDetail.getStudent());
+    studentsDetail.getStudentsCourseList().forEach(studentsCourses -> {
+      initStudentsCourse(studentsDetail, studentsCourses);
+      studentsRepository.registerStudentsCourses(studentsCourses);
+    });
+    return studentsDetail;
   }
 
-  public List<Student> searchStudentList() {
-    return studentsRepository.getAllStudents();
+  private static void initStudentsCourse(StudentsDetail studentsDetail,
+      StudentsCourse studentsCourse) {
+    studentsCourse.setStudentID(studentsDetail.getStudent().getId());
+    LocalDate now = LocalDate.now();
+    studentsCourse.setStartDate(now);
+    studentsCourse.setEndDate(now.plusYears(1));
+  }
+
+  public List<StudentsDetail> searchStudentList() {
+    List<Student> studentList = studentsRepository.getAllStudents();
+    List<StudentsCourse> studentsCoursesList = studentsRepository.getAllStudentsCourses();
+    return studentsConverter.convertStudentsDetails(studentList, studentsCoursesList);
   }
 
   public StudentsDetail findStudentById(String id) {
     Student student = studentsRepository.findStudentById(id);
-    List<StudentsCourses> courses = studentsCoursesRepository.findCourseByStudentId(id);
-    return new StudentsDetail(student, courses);
+    List<StudentsCourse> studentsCourse = studentsRepository.findStudentsCourseById(
+        student.getId());
+
+    return new StudentsDetail(student, studentsCourse);
   }
 
-  @Transactional
-  public StudentsCourses insertStudentsCourses(StudentsCourses studentsCourses) {
-    studentsCourses.setCourseID(UUID.randomUUID().toString());
-    studentsCoursesRepository.insertStudentsCourses(studentsCourses);
-    return studentsCourses;
-  }
 
-  public List<StudentsCourses> searchStudentsCoursesList() {
-    return studentsCoursesRepository.getAllStudentsCourses();
+  public List<StudentsCourse> searchStudentsCoursesList() {
+    return studentsRepository.getAllStudentsCourses();
   }
 
   @Transactional
@@ -59,11 +69,9 @@ public class StudentsService {
   }
 
   @Transactional
-  public void updateStudentsCourses(StudentsCourses studentsCourses) {
-    studentsCoursesRepository.updateStudentsCourses(studentsCourses);
+  public void updateStudentsCourses(StudentsCourse studentsCourse) {
+    studentsRepository.updateStudentsCourses(studentsCourse);
   }
-
-
 
 
 }

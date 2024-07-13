@@ -1,25 +1,25 @@
 package raisetech.student.management.Controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.student.management.Controller.converter.StudentsConverter;
-import raisetech.student.management.data.Student;
-import raisetech.student.management.data.StudentsCourses;
 import raisetech.student.management.domain.StudentsDetail;
+import raisetech.student.management.exception.TestException;
 import raisetech.student.management.service.StudentsService;
 import java.util.List;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
+@Validated
 @RestController
 public class StudentsController {
 
@@ -27,54 +27,42 @@ public class StudentsController {
   private StudentsConverter converter;
 
   @Autowired
-  public StudentsController(StudentsService studentsService, StudentsConverter converter) {
+  public StudentsController(StudentsService studentsService) {
     this.studentsService = studentsService;
-    this.converter = converter;
-  }
 
+  }
+  @Operation(summary = "一覧検索", description = "受講生の一覧を検索します")
   @GetMapping("/student")
-  public List<StudentsDetail> getStudentsList() {
-    List<Student> students = studentsService.searchStudentList();
-    List<StudentsCourses> studentsCourses = studentsService.searchStudentsCoursesList();
-    return converter.convertStudentsDetails(students,
-        studentsCourses);
-  }
+  public List<StudentsDetail> getStud2entsList() {
 
-  @GetMapping("/newStudent")
-  public String newStudent(Model model) {
-    model.addAttribute("studentsDetail", new StudentsDetail());
-    return "registerStudent";
+    return studentsService.searchStudentList();
   }
+  @Operation(summary = "受講生検索", description = "受講生を検索します")
+  @GetMapping("/students/{id}")
+  public StudentsDetail getStudent(@PathVariable @NotBlank @Pattern(regexp = "^\\d+$") @Size(min = 1,max = 3) String id) {
 
+    return studentsService.findStudentById(id);
+  }
+  @Operation(summary = "受講生登録", description = "受講生を登録します")
   @PostMapping("/registerStudent")
-  public String registerStudent(@ModelAttribute("studentsDetail") StudentsDetail studentsDetail,
-      BindingResult result) {
-    if (result.hasErrors()) {
-      return "registerStudent";
-    }
+  public ResponseEntity<StudentsDetail> registerStudent(@RequestBody @Valid StudentsDetail studentsDetail
+  ) {
+    StudentsDetail responseStudentsDetail = studentsService.registerStudent(studentsDetail);
 
-    Student newStudent = studentsDetail.getStudent();
-    Student savedStudent = studentsService.insertStudent(newStudent);
-    String savedStudentId = savedStudent.getId();
-
-    for (StudentsCourses course : studentsDetail.getStudentsCourses()) {
-      String courseId = UUID.randomUUID().toString();
-      course.setCourseID(courseId);
-      course.setStudentID(savedStudentId);
-      studentsService.insertStudentsCourses(course);
-    }
-    return "redirect:/student";
+    return ResponseEntity.ok(responseStudentsDetail);
   }
 
- 
-
+  @Operation(summary = "受講生更新", description = "受講生を更新します")
   @PostMapping("/updateStudent")
-  public ResponseEntity<String> updateStudent(@RequestBody StudentsDetail studentsDetail
-      ) {
-
+  public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentsDetail studentsDetail) {
     studentsService.updateStudent(studentsDetail.getStudent());
-
     return ResponseEntity.ok("更新処理が成功しました。");
+  }
+  @Operation(summary = "例外処理テスト", description = "例外処理をテストします")
+
+  @GetMapping("/testException")
+  public void testException() throws TestException {
+    throw new TestException("これはテスト例外です。");
   }
 }
 
