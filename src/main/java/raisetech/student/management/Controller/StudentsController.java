@@ -33,7 +33,7 @@ public class StudentsController {
   }
   @Operation(summary = "一覧検索", description = "受講生の一覧を検索します")
   @GetMapping("/student")
-  public List<StudentsDetail> getStud2entsList() {
+  public List<StudentsDetail> getStudentsList() {
 
     return studentsService.searchStudentList();
   }
